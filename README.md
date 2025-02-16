@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌳 NodeFlow - Drag & Drop Tree Manager
 
-## Getting Started
+NodeFlow is a **powerful hierarchical tree management system** with **drag-and-drop support**. Built using **Next.js, Prisma, and React DnD**, it allows users to manage files and folders **seamlessly** with **server-side logic and zero client-side fetching**.
 
-First, run the development server:
+🎯 **Key Features**
+- **👤 Drag & Drop** tree structure with **multi-select & ordering**.
+- **🗂️ File & Folder Management** (Create, Edit, Delete).
+- **🚀 Server Actions** (No API routes, 100% server-side logic).
+- **💼 PostgreSQL & Prisma** for high-performance database management.
+- **📂 Optimistic UI** for smooth user experience and drag and drop in tree.
+- **⚡ Fast & lightweight** (No heavy dependencies, fully SSR).
+- **🎨 Beautiful UI** with ShadCN & Framer Motion animations.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🔥 **Live Demo**
+👉 [**Try NodeFlow Here**](https://your-vercel-deployment-link.vercel.app)  
+
+---
+
+## 🗃️ **Screenshots**
+| Drag & Drop Files  | Multi-Select Support  |
+|--------------------|----------------------|
+| ![Drag & Drop](https://your-image-link.com) | ![Multi-Select](https://your-image-link.com) |
+
+---
+
+## 🛀 **Tech Stack**
+- **Frontend**: [Next.js 14](https://nextjs.org/), [React](https://reactjs.org/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/) with [Prisma](https://www.prisma.io/)
+- **UI**: [TailwindCSS](https://tailwindcss.com/), [ShadCN](https://ui.shadcn.com/)
+- **Drag & Drop**: [React DnD](https://react-dnd.github.io/) with [Minoru TreeView](https://github.com/minoru/react-dnd-treeview)
+- **Hosting**: [Vercel](https://vercel.com/)
+
+---
+
+## 🚀 **Getting Started**
+### **1⃣ Clone the Repository**
+```sh
+git clone https://github.com/AaratBatra/NodeFlow.git
+cd NodeFlow
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **2⃣ Install Dependencies**
+```sh
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **3⃣ Set Up Environment Variables**
+Create a `.env` file in the root directory and add:
+```env
+DATABASE_URL=postgres://your_user:your_password@your_host:5432/your_database
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **4⃣ Migrate Database**
+```sh
+npx prisma migrate deploy
+```
 
-## Learn More
+### **5⃣ Run the Project**
+```sh
+npm run dev
+```
+Now visit `http://localhost:3000` in your browser. 🚀
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 **Features Breakdown**
+### **🔹 Drag & Drop with Multi-Select**
+- Move **files & folders** within the tree.
+- **Multi-select support** for bulk actions.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### **🔹 Optimistic UI for Smooth Interactions**
+- Immediate UI updates on actions (edit, delete).
+- Rollbacks if server update fails.
 
-## Deploy on Vercel
+### **🔹 Secure & Scalable**
+- 100% **server-side logic** (No API calls needed).
+- Uses **Next.js Server Actions** for efficient data handling.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 💼 **Contributing**
+Contributions are welcome! Feel free to:
+- ⭐ Star the repo
+- 👀 Open an issue
+- 🔧 Submit a pull request
+
+---
+
+## 💬 **Contact & Socials**
+- **GitHub**: [@AaratBatra](https://github.com/AaratBatra)
+- **LinkedIn**: [Aarat Batra](https://www.linkedin.com/in/aaratbatra/)
+- **Instagram**: [@aaratbatra_114](https://x.com/aaratbatra_114)
+
+---
+
+## 🚀 **Show Your Support!**
+If you like this project, please **⭐️ star the repo** and **follow me on GitHub!** 💪🏻
