@@ -198,8 +198,8 @@ const HeaderForm = () => {
 										<AutoComplete
 											name="parentName"
 											//toUpdate="parentId"
-											label="Group Name"
-											placeholder="Enter group name"
+											label="Parent Name"
+											placeholder="Enter parent name"
 											form={form}
 											selectedValue={selectedValue}
 											onSelectedValueChange={
@@ -210,7 +210,7 @@ const HeaderForm = () => {
 											items={items}
 											isLoading={isLoading}
 											className="min-w-60"
-											description="Leave blank if no group needed"
+											description="Leave blank if no parent needed"
 										/>
 										<FormField
 											control={form.control}
@@ -328,8 +328,8 @@ const HeaderForm = () => {
 										<AutoComplete
 											name="parentName"
 											//toUpdate="parentId"
-											label="Group Name"
-											placeholder="Enter group name"
+											label="Parent Name"
+											placeholder="Enter parent name"
 											form={form}
 											selectedValue={selectedValue}
 											onSelectedValueChange={
@@ -339,7 +339,7 @@ const HeaderForm = () => {
 											onSearchValueChange={setSearchValue}
 											items={items}
 											isLoading={isLoading}
-											description="Leave blank if no group needed"
+											description="Leave blank if no parent needed"
 										/>
 									</div>
 								</CardContent>
