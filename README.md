@@ -16,7 +16,7 @@ NodeFlow is a **powerful hierarchical tree management system** with **drag-and-d
 ---
 
 ## 🔥 **Live Demo**
-👉 [**Try NodeFlow Here**](https://your-vercel-deployment-link.vercel.app)  
+👉 [**Try NodeFlow Here**](https://node-flow-five.vercel.app/)
 
 ---
 
@@ -85,9 +85,9 @@ Contributions are welcome! Feel free to:
 ---
 
 ## 💬 **Contact & Socials**
-- **GitHub**: [@AaratBatra](https://github.com/AaratBatra)
+- **X**: [@aaratbatra_114](https://x.com/aaratbatra_114)
 - **LinkedIn**: [Aarat Batra](https://www.linkedin.com/in/aaratbatra/)
-- **Instagram**: [@aaratbatra_114](https://x.com/aaratbatra_114)
+- **GitHub**: [@AaratBatra](https://github.com/AaratBatra)
 
 ---
 
