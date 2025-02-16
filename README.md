@@ -1,5 +1,7 @@
 # 🌳 NodeFlow - Drag & Drop Tree Manager
 
+![Demo](demo.gif)
+
 NodeFlow is a **powerful hierarchical tree management system** with **drag-and-drop support**. Built using **Next.js, Prisma, and React DnD**, it allows users to manage files and folders **seamlessly** with **server-side logic and zero client-side fetching**.
 
 🎯 **Key Features**
@@ -18,12 +20,6 @@ NodeFlow is a **powerful hierarchical tree management system** with **drag-and-d
 
 ---
 
-## 🗃️ **Screenshots**
-| Drag & Drop Files  | Multi-Select Support  |
-|--------------------|----------------------|
-| ![Drag & Drop](https://your-image-link.com) | ![Multi-Select](https://your-image-link.com) |
-
----
 
 ## 🛀 **Tech Stack**
 - **Frontend**: [Next.js 14](https://nextjs.org/), [React](https://reactjs.org/)
