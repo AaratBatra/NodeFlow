@@ -56,20 +56,21 @@ export const createResource = async (
 };
 
 export const parentLookup = async (q: string) => {
-	if (q.length < 1) return;
 	const res = await prisma.item.findMany({
 		where: {
-			name: {
-				contains: q,
-			},
-			AND: {
-				type: "FOLDER",
-			},
+			name:
+				q.length > 0
+					? {
+							contains: q,
+					  }
+					: undefined,
+			type: "FOLDER",
 		},
 		select: {
 			parentId: true,
 			name: true,
 		},
+		take: 20,
 	});
 	const arr = res.map(({ parentId, name }) => ({
 		value: parentId || "#",

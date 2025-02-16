@@ -54,7 +54,6 @@ const HeaderForm = () => {
 	const [items, setItems] = useState<{ value: string; label: string }[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	useEffect(() => {
-		if (debouncedText.length < 1) return;
 		setIsLoading(true);
 		async function getResults(q: string) {
 			const res = await parentLookup(q);
@@ -62,7 +61,7 @@ const HeaderForm = () => {
 			setItems(res);
 			setIsLoading(false);
 		}
-		getResults(debouncedText);
+		getResults(debouncedText || "");
 	}, [debouncedText]);
 
 	async function handleCreate(data: z.infer<typeof schema>) {
@@ -298,7 +297,9 @@ const HeaderForm = () => {
 									<CardDescription>
 										The new group will be added at the top
 										of the tree (if no parent group
-										specified)
+										specified). A parent name is any name
+										you see below in tree with a folder
+										icon.
 									</CardDescription>
 								</CardHeader>
 								<CardContent className="p-2">
