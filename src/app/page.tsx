@@ -88,7 +88,7 @@ export default async function Home({
 							className="p-4"
 						>
 							<div className="w-full h-full border bg-white shadow-md rounded-md">
-								<ExpandableCard height="5rem">
+								<ExpandableCard height="3.25rem">
 									<h2>Sortable drag and drop tree</h2>
 									<h3>Some instructions</h3>
 									<ul className="my-6 ml-6 list-disc [&>li]:mt-2">
@@ -154,7 +154,56 @@ export default async function Home({
 				</div>
 				<div className="md:hidden">
 					<Preview id={searchParams.id} />
-					<DndTree data={data} />
+					<div className="w-full h-full border bg-white shadow-md rounded-md">
+						<DndTree data={data} />
+						<ExpandableCard height="4rem">
+							<h2>Sortable drag and drop tree</h2>
+							<h3>Some instructions</h3>
+							<ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+								<li>
+									Create a group by clicking "Create" on top
+									right and selecting the Group tab on top
+									left
+								</li>
+								<li>
+									Paste image URL for an item&apos;s image to
+									appear in it&apos;s preview
+								</li>
+								<li>
+									Type any available group&apos;s name (a
+									group with a folder icon in the tree below)
+									or leave blank in parent field
+								</li>
+								<li>
+									After clicking an item / group, hover on its
+									title on right side to edit or delete
+								</li>
+							</ul>
+							<h3>Features</h3>
+							<ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+								<li>
+									Drag and drop single or multiple items in
+									the tree
+								</li>
+								<li>
+									Resizable preview section on the right
+									appears by clicking any item
+								</li>
+								<li>
+									Everything in sync with Database and Next
+									server. Tech stack- Next JS, PostgreSQL,
+									React - DND, Framer Motion, Zod, Vercel
+								</li>
+								<li>Optimistic UI drag and drop</li>
+								<li>Framer motion animations</li>
+								<li>Tags and server side lookups</li>
+								<li>
+									ONLY item name or group name necessary to
+									create it
+								</li>
+							</ul>
+						</ExpandableCard>
+					</div>
 				</div>
 			</div>
 		</>

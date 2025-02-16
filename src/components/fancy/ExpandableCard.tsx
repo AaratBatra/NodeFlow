@@ -35,7 +35,7 @@ export function ExpandableCard({
 	return (
 		<div
 			className={cn(
-				"bg-white dark:bg-zinc-950 dark:from-zinc-950 from-white w-full border px-4 pt-8 pb-3 rounded-lg shadow",
+				"bg-white dark:bg-zinc-950 dark:from-zinc-950 from-white w-full border px-4 py-2 rounded-lg shadow",
 				className
 			)}
 		>

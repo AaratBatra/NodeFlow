@@ -24,7 +24,7 @@ const PreviewContent = async ({ id }: { id: string }) => {
 	if (!res) return <></>;
 
 	return (
-		<ScrollArea className="w-full h-full max-h-[80vh] max-md:max-h-[72vh] flex flex-col p-4 border max-md:rounded-md max-md:shadow-md max-md:mb-4">
+		<ScrollArea className="w-full h-full max-h-[90vh] max-md:max-h-[72vh] flex flex-col p-4 border max-md:rounded-md max-md:shadow-md max-md:mb-4">
 			{res.type === "FOLDER" ? (
 				<FolderView
 					item={{
