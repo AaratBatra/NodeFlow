@@ -23,19 +23,10 @@ export default function DndTree({ data }: { data?: TreeItem[] }) {
 	const searchParams = useSearchParams();
 	if (!data) return;
 	const { ref, getPipeHeight, toggle } = useTreeOpenHandler();
-	const [selectedNodes, setSelectedNodes] = useState<NodeModel<TreeItem>[]>(
-		[]
-	);
-	const [treeData, setTreeData] = useState<NodeModel<TreeItem>[]>([]);
+	const [selectedNodes, setSelectedNodes] = useState<NodeModel[]>([]);
+	const [treeData, setTreeData] = useState<NodeModel[]>([]);
 	useEffect(() => {
-		const arr = data.map((d) => ({
-			id: d.id,
-			parent: d.parent,
-			text: d.text,
-			droppable: d.droppable,
-			data: d,
-		}));
-		setTreeData(arr);
+		setTreeData(data);
 	}, [data]);
 
 	const handleClick = (node: NodeModel) => {
@@ -44,102 +35,130 @@ export default function DndTree({ data }: { data?: TreeItem[] }) {
 		router.push(`?${params.toString()}`, { scroll: false });
 	};
 
-	const handleDrop = (newTree: NodeModel[], e: DropOptions) => {
-		const { dragSourceId, dropTargetId, destinationIndex } = e;
-
+	const handleDrop = async (newTree: NodeModel[], e: DropOptions) => {
+		//console.log(e);
+		const relativeIndex = e.relativeIndex; // index relative to the drop target 0-based
+		const destinationIndex = e.destinationIndex; // index according to the entire tree 0-based
+		const dragSourceId = e.dragSourceId;
+		const dropTargetId = e.dropTargetId;
+		const dropTarget = e.dropTarget;
 		if (
+			typeof relativeIndex === "undefined" ||
+			typeof destinationIndex === "undefined" ||
 			!dragSourceId ||
 			!dropTargetId ||
-			typeof destinationIndex !== "number"
+			!dropTarget ||
+			!dropTarget.droppable
 		)
 			return;
+		// create a deep copy of entire tree for fallback if server fails to update
+		const deepCopy = JSON.parse(JSON.stringify(treeData));
+
+		// prepare selected nodes- if a parent is selected, its children should not be there
+		const selectedParents = new Set();
+		const processedSelectedNodes = [...selectedNodes].filter((node) => {
+			if (selectedParents.has(node.parent)) {
+				if (node.droppable) {
+					selectedParents.add(node.id);
+					// since this is a folder inside the dragged folder, this folder's descendants must also be ignored
+				}
+				return false;
+			}
+			if (node.droppable) {
+				selectedParents.add(node.id);
+			}
+			return true;
+		});
+		// find out the dragged nodes- selected nodes or dragSourceId
+		//console.log("processed selected nodes: ", processedSelectedNodes);
 
 		const draggedNodes =
-			selectedNodes.length > 1
-				? selectedNodes
-				: treeData.filter((node) => node.id === dragSourceId);
+			processedSelectedNodes.length > 1
+				? processedSelectedNodes
+				: treeData.filter((el) => el.id === dragSourceId);
 
-		if (draggedNodes.length === 0) return;
-
-		const dropTarget = treeData.find((node) => node.id === dropTargetId);
-		if (!dropTarget?.droppable) return;
-
-		// Prevent dropping into own descendants
 		if (
 			draggedNodes.some((node) =>
 				getDescendants(treeData, node.id).some(
 					(desc) => desc.id === dropTargetId
 				)
 			)
-		)
+		) {
 			return;
-		// Optimistic UI Update
-		const previousTree = JSON.parse(JSON.stringify([...treeData])); //[...treeData];
+		}
+
+		// filter out the dragged nodes
 		const prevTree = [...treeData];
-		let updatedTree = prevTree.filter(
-			(n) => !draggedNodes.some((d) => d.id === n.id)
+		//console.log("prev tree: ", prevTree);
+		//console.log("before dragged nodes: ", draggedNodes);
+		// prevTree.forEach((node) =>
+		// 	console.log(!draggedNodes.some((n) => n.id === node.id))
+		// );
+		const filteredTree = prevTree.filter(
+			(node) => !draggedNodes.some((n) => n.id === node.id)
 		);
+		//console.log("before filtered tree: ", filteredTree);
 
-		let folderIds: string[] = [];
 		draggedNodes.forEach((node, index) => {
-			if (!folderIds.includes(node.parent as string)) {
-				// this node has a parent that is being dragged so leave its parent id as it is
+			node.parent = dropTargetId; // assign the new parent to the dragged node
+			filteredTree.splice(destinationIndex + index, 0, node); // add the new node to the filteredTree array
+		});
 
-				if (node.droppable) {
-					// this is a folder being dragged and put into dropTargetId
-					// we do not have to change the parentId of the contents of this folder and only change the parentIf of the current folder
-					node.parent = dropTargetId;
-					folderIds.push(node.id as string);
-				} else {
-					node.parent = dropTargetId;
+		//console.log("dragged nodes", draggedNodes);
+		//console.log("after filtered tree: ", filteredTree);
+		//setTreeData(filteredTree); //no need to setTreeData as the server action itself will invalidate
+
+		// Prepare for DB mutation
+		try {
+			const updates: any = [];
+			for (let i = 0; i < draggedNodes.length; i++) {
+				const foundNode = filteredTree.find(
+					(n) => n.id === draggedNodes[i].id
+				);
+
+				if (!foundNode) {
+					throw new Error(
+						"Could not find node in filtered tree, cannot push changes to server"
+					);
+				}
+
+				const descendantsOfNewParent = getDescendants(
+					filteredTree,
+					foundNode.parent
+				).filter((d) => d.parent === foundNode.parent);
+
+				for (let j = 0; j < descendantsOfNewParent.length; j++) {
+					updates.push({
+						id: descendantsOfNewParent[j].id as string,
+						parentId: descendantsOfNewParent[j].parent, //foundNode.parent as string,
+						order: j + 1,
+						type: descendantsOfNewParent[j].droppable
+							? "FOLDER"
+							: "FILE",
+					});
 				}
 			}
-			updatedTree.splice(destinationIndex + index, 0, node); // destinationIndex + index because we wanna preserve the order
-		});
 
-		setTreeData(updatedTree);
+			const res = await updateTree(updates);
 
-		// Prepare data for the server update
-		const updates = draggedNodes.map((node, index) => ({
-			id: node.id as string,
-			parentId: folderIds.includes(node.parent as string)
-				? String(node.parent)
-				: (dropTargetId as string),
-			order: destinationIndex + index + 1, // DB has 1 based indexing
-			type: node.droppable ? "FOLDER" : "FILE",
-		}));
-
-		// Send updates to the database
-		updateTree(updates).then((response) => {
-			if (!response.success) {
-				toast.error(response.error || "Failed to update database");
-				setTreeData(previousTree); // Revert on failure
-			} else {
-				toast.success("Tree updated successfully");
+			if (!res.success) {
+				throw new Error(
+					`Server could not update the changes: ${res.error}`
+				);
 			}
-		});
-
-		setSelectedNodes([]); // Clear selection after drop
-		// setTreeData((prevTree) => {
-		// 	let updatedTree = prevTree.filter(
-		// 		(n) => !draggedNodes.some((d) => d.id === n.id)
-		// 	);
-
-		// 	draggedNodes.forEach((node) => {
-		// 		node.parent = dropTargetId;
-		// 		updatedTree.splice(destinationIndex, 0, node);
-		// 	});
-
-		// 	return updatedTree;
-		// });
-
-		// setSelectedNodes([]); // Clear selection after drop
+			toast.success("Tree updated successfully");
+		} catch (error: any) {
+			toast.error(error.message);
+			setTreeData(deepCopy);
+		} finally {
+			setSelectedNodes([]);
+		}
 	};
 
 	return (
 		<DndProvider backend={MultiBackend} options={getBackendOptions()}>
 			<div className={styles.wrapper}>
-				<Tree<TreeItem>
+				<Tree
 					ref={ref}
 					classes={{
 						root: styles.treeRoot,

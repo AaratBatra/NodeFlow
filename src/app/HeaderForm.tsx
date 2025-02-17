@@ -72,9 +72,9 @@ const HeaderForm = () => {
 		const res = await createResource(payload);
 		if (res.success) {
 			if (data.type === "FILE") {
-				toast("Item created successfully");
+				toast.success("Item created successfully");
 			} else {
-				toast("Group created successfully");
+				toast.success("Group created successfully");
 			}
 			form.reset({
 				name: "",
@@ -85,7 +85,7 @@ const HeaderForm = () => {
 			});
 			setExpand(false);
 		} else {
-			toast(res.message);
+			toast.error(res.message);
 		}
 	}
 

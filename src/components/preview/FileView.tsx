@@ -72,14 +72,14 @@ export const FileView = ({ item }: FileViewProps) => {
 			tags: tags.length > 0 ? tags.map((t) => t.value).join(", ") : null,
 		});
 		if (res.success) {
-			toast(res.message as string);
+			toast.success(res.message as string);
 			setIsEditing(false);
 		} else {
 			if (res.type === "SCHEMA ERROR") {
 				setErrors(res.errors);
 				return;
 			}
-			toast("some error occurred");
+			toast.error("some error occurred");
 			console.log(res);
 		}
 	};

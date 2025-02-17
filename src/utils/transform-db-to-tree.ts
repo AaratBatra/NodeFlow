@@ -35,6 +35,10 @@ export function transformPrismaToTreeData(
 				parent: item.parentId || 0, // Use 0 for root items (null parentId)
 				text: item.name,
 				droppable: true,
+				data: {
+					type: item.type,
+					order: item.order,
+				},
 			};
 		} else {
 			return {

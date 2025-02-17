@@ -49,6 +49,13 @@ const Node: React.FC<{
 				<Checkbox
 					checked={selectedNodes.some((n) => n.id === node.id)}
 					onCheckedChange={(e) => {
+						// if (!e && selectedNodes.some((s) => s.id === node.id)) {
+						// 	if (
+						// 		selectedNodes.some((s) => s.id === node.parent)
+						// 	) {
+						// 		return;
+						// 	}
+						// }
 						if (node.droppable) {
 							// Select folder + all its descendants
 							const allChildren = getDescendants(
@@ -56,25 +63,39 @@ const Node: React.FC<{
 								node.id
 							);
 							if (selectedNodes.some((n) => n.id === node.id)) {
-								setSelectedNodes((prev) =>
-									prev.filter((n) => {
+								setSelectedNodes((prev) => [
+									...prev.filter((n) => {
 										if (
 											n.id !== node.id &&
-											!allChildren.includes(n)
+											!allChildren.includes(n) &&
+											!allChildren.some(
+												(c) => c.parent === n.parent
+											)
 										) {
 											return true;
 										}
-									})
-								);
+									}),
+								]);
 							} else {
-								setSelectedNodes([node, ...allChildren]);
+								//console.log("here");
+								setSelectedNodes((prev) => [
+									...prev,
+									{ ...node },
+									...allChildren,
+								]);
+								/*
+								.filter(
+										(c) => c.parent === node.id || c.droppable
+									)
+								*/
 							}
 						} else {
 							// Select single node
+							//console.log("node: ", node);
 							setSelectedNodes((prev) =>
 								prev.some((n) => n.id === node.id)
-									? prev.filter((n) => n.id !== node.id)
-									: [...prev, node]
+									? [...prev.filter((n) => n.id !== node.id)]
+									: [...prev, { ...node }]
 							);
 						}
 					}}
@@ -110,13 +131,13 @@ const Node: React.FC<{
 			>
 				{node.text}
 			</div>
-			<div
-				className={`${styles.expandIconWrapper} ${
-					isOpen ? styles.isOpen : ""
-				} size-8 rounded-full flex items-center justify-center hover:bg-primary/20`}
-				onClick={handleToggle}
-			>
-				{node.droppable && (
+			{node.droppable && (
+				<div
+					className={`${styles.expandIconWrapper} ${
+						isOpen ? styles.isOpen : ""
+					} size-8 rounded-full flex items-center justify-center hover:bg-primary/20`}
+					onClick={handleToggle}
+				>
 					<svg
 						width="16"
 						height="16"
@@ -129,8 +150,8 @@ const Node: React.FC<{
 							fill="black"
 						/>
 					</svg>
-				)}
-			</div>
+				</div>
+			)}
 		</div>
 	);
 };
