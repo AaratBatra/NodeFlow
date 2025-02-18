@@ -41,7 +41,7 @@ export default function RootLayout({
 					data-description="Support me on Buy me a coffee!"
 					data-message=""
 					data-color="#f2df0a"
-					data-position="Right"
+					data-position="Left"
 					data-x_margin="18"
 					data-y_margin="18"
 				></script>
