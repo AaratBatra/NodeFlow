@@ -70,7 +70,7 @@ export const FolderView = ({
 				>
 					<div className="my-2 flex items-center justify-between group">
 						<h1 className="my-2">{item.name}</h1>
-						<div className="w-max flex opacity-0 items-center gap-2 group-hover:opacity-100">
+						<div className="w-max flex opacity-80 items-center gap-2 group-hover:opacity-100">
 							<Button
 								variant={"outline"}
 								size={"icon"}
