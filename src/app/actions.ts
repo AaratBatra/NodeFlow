@@ -163,7 +163,7 @@ export const updateTree = async (
 		await Promise.all(updatePromises);
 
 		// Revalidate cache for fresh tree data
-		revalidatePath("/");
+		// revalidatePath("/");
 
 		return { success: true };
 	} catch (error) {

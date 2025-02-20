@@ -106,7 +106,7 @@ export default function DndTree({ data }: { data?: TreeItem[] }) {
 
 		//console.log("dragged nodes", draggedNodes);
 		//console.log("after filtered tree: ", filteredTree);
-		//setTreeData(filteredTree); //no need to setTreeData as the server action itself will invalidate
+		setTreeData(filteredTree); //no need to setTreeData as the server action itself will invalidate
 
 		// Prepare for DB mutation
 		try {
